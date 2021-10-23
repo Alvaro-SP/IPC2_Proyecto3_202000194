@@ -1,0 +1,238 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IPC2_Proyecto3_202000194</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Tooplate">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href='{% static "/css/bootstrap.min.css" %}'>
+    <link rel="stylesheet" href='{% static "/css/font-awesome.min.css" %}'>
+    <link rel="stylesheet" href='{% static "/css/animate.css" %}'>
+    <link rel="stylesheet" href='{% static "/css/owl.carousel.css" %}'>
+    <link rel="stylesheet" href='{% static "/css/owl.theme.default.min.css" %}'>
+    <link rel="stylesheet" href='{% static "/images" %}'>
+    <!-- CSS CUSTOM -->
+    <!-- <link rel=”stylesheet” href=”{% static 'css/tooplate-style.css' %}”> -->
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href='{% static "/css/tooplate-style.css" %}'>
+    <script type="text/javascript" src="{% static '/js/papaparse.min.js' %}"></script>
+</head>
+
+<body  id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+    <!--! PRE LOADER -->
+    <section class="preloader">
+        <div class="spinner">
+            <span class="spinner-rotate"></span>
+
+        </div>
+    </section>
+    <!--! HEADER -->
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-5">
+                    <p>BIENVENIDO A MI PROYECTO 3</p>
+                </div>
+                <div class="col-md-8 col-sm-7 text-align-right">
+                    <span class="phone-icon"><i class="fa fa-phone"></i> 57707472</span>
+                    <span class="date-icon"><i class="fa fa-calendar-plus-o"></i> 6:00 AM - 10:00 PM
+                        (Lunes-Viernes)</span>
+                    <span class="email-icon"><i class="fa fa-envelope-o"></i> <a
+                            href="mailto: 3034161730108@ingenieria.usac.edu.gt?subject= Hola Alvaro" target="_blank">3034161730108@ingenieria.usac.edu.gt</a></span>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!--! SELECCIÓN DE ARCHIVO -->
+<section class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-collapse">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon icon-bar"></span>
+                <span class="icon icon-bar"></span>
+                <span class="icon icon-bar"></span>
+            </button>
+
+            <!-- lOGO TEXT HERE -->
+            <a href="http://localhost:8000" class="navbar-brand"><i class="fa fa-h-square"></i>OLA MUNDO</a>
+        </div>
+
+        <!-- MENU LINKS -->
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav ">
+                <li>
+                    <div>
+                        <form method="POST" class="div_file" enctype="multipart/form-data">
+                            <p class="texto">SELECCIONAR ARCHIVO</p>
+                            <input id="documentoXML" type="file" name="documentoXML[]" class="btn_enviar" accept=".xml"
+                                multiple>
+                        </form>
+
+                    </div>
+                    <!-- <li onclick="cerrarsesion()" class="btn btn-primary texto">
+                                <p href="#appointment" class="texto">CARGAR ARCHIVO</p> -->
+                <li>
+                    <div class="div_file">
+                        <!-- <button class="div_file "> -->
+                        <p class="texto" data-toggle="dropdown">PETICIONES</p>
+                        <!-- </button> -->
+                        <div class="dropdown-menu ">
+                            <br>
+                            <!-- !Al seleccionar esta opción se deben de consultar los datos almacenados en el archivo autorizaciones.xml y se mostrarán los datos en un recuadro de texto de salida. -->
+                            <a href="http://localhost:8000" class="dropdown-item">Consultar Datos</a>
+                            <br><br>
+                            <!--! Al seleccionar esta opción se podrá elegir la fecha por la cual se requiere filtrar y se debe de mostrar gráficamente un resumen de movimientos por NIT en esa fecha dada. Por cada NIT se debe apreciar el IVA emitido y el IVA recibido. -->
+                            <a href="http://localhost:8000/ResumenIva" class="dropdown-item">Resumen IVA fecha/NIT</a>
+                            <br><br>
+                            <!-- !Al seleccionar esta opción se podrá elegir unrango de fechas por la cual se requiere filtrar, luego podrá elegir si desea verlos valores totales o los valores sin IVA. Se deberá presentar gráficamente por cada fecha el valor autorizado (Total o sin IVA). -->
+                            <a href="http://localhost:8000/ResumenRango" class="dropdown-item">Resumen RANGO/fechas</a>
+                            <!-- <br><br>
+                            Se deberán crear gráficas para los dos resúmenes anteriores. Unejemplo se muestra en la figura 2.
+                            <a onclick="" class="dropdown-item">Gráfica</a> -->
+                            <br><br>
+                            <!--! Deberá ser posible realizar un reporte de todas laspeticiones anteriormente descritas -->
+                            <a onclick="pdf()" class="dropdown-item">Reporte PDF</a>
+
+                        </div>
+                    </div>
+
+                    <!-- <li onclick="cerrarsesion()" class="appointment-btn">
+                                <a href="#appointment">AYUDA</a> -->
+                <li>
+                    <div class="div_file">
+                        <p class="texto" data-toggle="dropdown">AYUDA</p>
+                        <div class="dropdown-menu ">
+                            <br><br>
+                            <a href="" class="dropdown-item">DOCUMENTACION</a>
+                            <br><br>
+                            <a onclick="me()" class="dropdown-item">INFORMACIÓN ESTUDIANTE</a>
+                        </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+    {% block content %} {% endblock content %}
+
+
+
+    <!-- TODO:GOOGLE MAP -->
+    <iframe
+        src="https://maps.google.com/maps?width=100%25&amp;height=1490&amp;hl=en&amp;q=San%20Carlos%20University+(Universidad%20de%20San%20Carlos%20de%20Guatemala)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+        width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
+    <!--!FOOTER -->
+    <footer id="footer" data-stellar-background-ratio="5">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-4 col-sm-4">
+                    <div class="footer-thumb">
+                        <h4 class="wow fadeInUp" data-wow-delay="0.4s">Contáctenos</h4>
+                        <p>202000194</p>
+
+                        <div class="contact-info">
+                            <p><i class="fa fa-phone"></i> +502 57707472</p>
+                            <p><i class="fa fa-envelope-o"></i> <a href="#">3034161730108@ingenieria.usac.edu.gt</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-4">
+                    <div class="footer-thumb">
+                        <h4 class="wow fadeInUp" data-wow-delay="0.4s">Ultimas Actualizaciones</h4>
+                        <div class="latest-stories">
+                            <div class="stories-image">
+                                <!-- <a href="#"><img src="images/news-image.jpg" class="img-responsive" alt=""></a> -->
+                            </div>
+                            <div class="stories-info">
+                                <a href="#">
+                                    <h5>Amazing Technology</h5>
+                                </a>
+                                <span>March 08, 2018</span>
+                            </div>
+                        </div>
+
+                        <div class="latest-stories">
+                            <div class="stories-image">
+                                <!-- <a href="#"><img src="images/news-image.jpg" class="img-responsive" alt=""></a> -->
+                            </div>
+                            <div class="stories-info">
+                                <a href="#">
+                                    <h5>New Healing Process</h5>
+                                </a>
+                                <span>February 20, 2018</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-4">
+                    <div class="footer-thumb">
+                        <div class="opening-hours">
+                            <h4 class="wow fadeInUp" data-wow-delay="0.4s">Horario de Atención</h4>
+                            <p>Lunes - Viernes <span>06:00 AM - 10:00 PM</span></p>
+                            <p>Sabado <span>09:00 AM - 08:00 PM</span></p>
+                            <p>Domingo <span>Cerrado, es dia de Dios</span></p>
+                        </div>
+
+                        <ul class="social-icon">
+                            <li><a href="#" class="fa fa-facebook-square" attr="facebook icon"></a></li>
+                            <li><a href="#" class="fa fa-twitter"></a></li>
+                            <li><a href="#" class="fa fa-instagram"></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-sm-12 border-top">
+                    <div class="col-md-4 col-sm-6">
+                        <div class="copyright-text">
+                            <p>Copyright &copy; 2022 PROYECTO 3
+
+                                | Diseño: El Bootstrap :v</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="footer-link">
+                            <a href="https://www.who.int/es">OMS</a>
+                            <a href="https://www.mspas.gob.gt">MSPAS</a>
+                            <a href="https://www.gob.pe/minsa/">MINSA</a>
+                            <a href="https://covid19.who.int">COVID 19 INFO</a>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-sm-2 text-align-center">
+                        <div class="angle-up-btn">
+                            <a href="#top" class="smoothScroll wow fadeInUp" data-wow-delay="1.2s"><i
+                                    class="fa fa-angle-up"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+    <!-- SCRIPTS -->
+    <script src='{% static "/js/jquery.js" %}'></script>
+    <script src='{% static "/js/bootstrap.min.js" %}'></script>
+    <script src='{% static "/js/jquery.sticky.js" %}'></script>
+    <script src='{% static "/js/jquery.stellar.min.js" %}'></script>
+    <script src='{% static "/js/wow.min.js" %}'></script>
+    <script src='{% static "/js/smoothscroll.js" %}'></script>
+    <script src='{% static "/js/owl.carousel.min.js" %}'></script>
+    <script src='{% static "/js/custom.js" %}'></script>
+    <!--!importante-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src='{% static "/js/papaparse.min.js" %}'></script>
+</body>
+
+</html>

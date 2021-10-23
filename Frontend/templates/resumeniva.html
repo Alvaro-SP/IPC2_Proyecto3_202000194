@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container">
+    <br>
+    <h1>Filtro por fecha</h1>
+    <div class="row">
+        <div class="col">
+            <br>
+            <br>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">Fechas en Sistema: </label>
+                <select class="form-select form-select-lg mb-1" id="inputGroupSelect01">
+                    <option selected>Seleccione una fecha...</option>
+                    {% for fecha in fechaslist %}
+                    <option id="selectDate" value="{{ fecha }}">{{ fecha }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <br>
+            <br>
+            <button type="submit" onclick="generateGraphic()" class="btn btn-primary">Generar grafica</button>
+        </div>
+        <div class="col">
+            <br>
+            <br>
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+
+
+    <script>
+        console.log()
+        let miCanvas = document.getElementById("myChart").getContext("2d")
+
+        function generateGraphic() {
+            datos = []
+            labels = []
+            let selectFecha = document.getElementById("inputGroupSelect01").value
+            var selectFechaobj = {
+                'date': selectFecha
+            }
+            fetch('http://localhost:5000/ResumenIva', {
+                method: 'POST',
+                body: JSON.stringify(selectFechaobj),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                }
+            }).then(response => response.json())
+                .catch(error => {
+                    console.error('Error:', err)
+                    alert("Ocurrio un error, ver la consola")
+                })
+                .then(res => {
+                    console.log('!!All Well!!')
+                    alert("!!  Data Sent Correctly !!")
+                })
+
+
+
+
+
+            console.log("██████████")
+            fetch(`http://localhost:5000/ResumenIva_emitido`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                }
+            })
+                .then(res => res.json())
+                .catch(err => {
+                    console.error('Error:', err)
+                    alert("Ocurrio un error, ver la consola")
+                })
+                .then(res => {
+                    console.log(res)
+                    alert("!!Data request Correctly !!")
+
+                })
+
+
+            
+        }
+
+
+
+
+    </script>
+    {% endblock content %}
