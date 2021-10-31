@@ -15,10 +15,27 @@ cors = CORS(app, resourses={r"/*": {"origin": "*"}})
 
 peticion = peticiones()
 entradaglobal = ""
-fecha_resumen = ""
+
+fecha_resumen = ""  #!Es temporal
 cont_EntradaXML=1 #*CONTADOR DE TIPO ENTERO
 cont_SalidaXML=1 #*CONTADOR DE TIPO ENTERO
 mensaje_errores=""
+fecha_rangoini=""
+fecha_rangofin=""
+parametro=""
+list_fechas_sistema=[]
+
+mensaje_formal_new=""
+try: 
+    file = open('Serializacion/ultimoXMLleido.txt', 'r', encoding="utf8")        
+    cadena_leida=file.read()
+    file.close()
+    if cadena_leida!="":
+        entradaglobal = cadena_leida
+    else :
+        entradaglobal = ""
+except:
+    entradaglobal = ""
 
 #!██████████████████    RESETEAR TODO     █████████████████████
 
@@ -42,12 +59,15 @@ def post_events():
     global mensaje_errores
     parse_request = request.json['XMLdatos']
     #  '+str(cont_EntradaXML)+' -->
-    archivo = open('XML_generados/archivo_Entrada_.xml', 'w')
+    archivo = open('XML_generados/archivo_Entrada_'+str(cont_EntradaXML)+'.xml', 'w')
     cont_EntradaXML+=1
     archivo.write(parse_request)
     archivo.close()
 
     entradaglobal = parse_request
+    archivo1 = open('XML_generados/ultimoXMLleido.xml', 'w', encoding="utf8")        
+    archivo1.write(entradaglobal)
+    archivo1.close()
     parse_request = parse_request.lower()
 
     root_machine = ET.fromstring(parse_request)
@@ -138,8 +158,8 @@ def post_events():
                 nitcorrect2 = True
             else:
                 nitcorrect2 = False
-
-            if iva == ivacalc and total == totalcalc and nitcorrect1 == True and nitcorrect2 == True and referencia not in list_referencia:
+            val_sis_ref=peticion.verificar_peticion_referencia(referencia)
+            if iva == ivacalc and total == totalcalc and nitcorrect1 == True and nitcorrect2 == True and referencia not in list_referencia and val_sis_ref:
                 cantidad_Facturas_Buenas += 1
                 fecha = fecha.split("/")
                 dia = int(fecha[0])
@@ -175,10 +195,11 @@ def post_events():
                 nit_receptor_temp = 0
                 iva_error_temp = 0
                 total_error_temp = 0
-                if referencia in list_referencia:
+                if referencia in list_referencia or val_sis_ref==False:
                     print("REFERENCIA DUPLICADA")
                     referencia_duplicada += 1
                     refcont_temp += 1
+                    DTEerror+="       DTE No."+str(contadorDTE)+" -> con fecha "+str(fechaoriginal)+", la referencia es duplicada.  \n"
                     # datosobj = datos(False, None, parse(fechaoriginal, dayfirst=True), referencia,nit_emisor, nit_receptor, valor, iva, total, 1,0,0,0,0)
                     # # TODO: se agrega el objeto
                     # peticion.agregar_peticion(datosobj)
@@ -187,6 +208,8 @@ def post_events():
                     print("NIT EMISOR MAL CALCULADO")
                     nit_emisor_invalid += 1
                     nit_emisor_temp += 1
+                    # DTEerror+="DTE con fecha: "+str(fechaoriginal)+" tiene NIT emisor malo.\n"
+                    DTEerror+="       DTE No."+str(contadorDTE)+" -> con fecha "+str(fechaoriginal)+", tiene NIT EMISOR malo.  \n"
                     # datosobj = datos(False, None, parse(fechaoriginal, dayfirst=True), referencia,nit_emisor, nit_receptor, valor, iva, total, 0,1,0,0,0)
                     # # TODO: se agrega el objeto
                     # peticion.agregar_peticion(datosobj)
@@ -194,6 +217,8 @@ def post_events():
                     print("NIT RECEPTOR MAL CALCULADO")
                     nit_receptor_invalid += 1
                     nit_receptor_temp += 1
+                    # DTEerror+="DTE con fecha: "+str(fechaoriginal)+" tiene NIT emisor malo.\n"
+                    DTEerror+="       DTE No."+str(contadorDTE)+" -> con fecha "+str(fechaoriginal)+", tiene NIT RECEPTOR malo.  \n"
                     # datosobj = datos(False, None, parse(fechaoriginal, dayfirst=True), referencia,nit_emisor, nit_receptor, valor, iva, total, 0,0,1,0,0)
                     # # TODO: se agrega el objeto
                     # peticion.agregar_peticion(datosobj)
@@ -201,6 +226,7 @@ def post_events():
                     print("IVA MAL CALCULADO")
                     iva_error += 1
                     iva_error_temp += 1
+                    DTEerror+="       DTE No."+str(contadorDTE)+" -> con fecha "+str(fechaoriginal)+", tiene el IVA malo.  \n"
                     # datosobj = datos(False, None, parse(fechaoriginal, dayfirst=True), referencia,nit_emisor, nit_receptor, valor, iva, total, 0,0,0,1,0)
                     # # TODO: se agrega el objeto
                     # peticion.agregar_peticion(datosobj)
@@ -208,6 +234,7 @@ def post_events():
                     print("TOTAL MAL CALCULADO")
                     total_error += 1
                     total_error_temp += 1
+                    DTEerror+="       DTE No."+str(contadorDTE)+" -> con fecha "+str(fechaoriginal)+", tiene el TOTAL malo.  \n"
                     # datosobj = datos(False, None, parse(fechaoriginal, dayfirst=True), referencia,nit_emisor, nit_receptor, valor, iva, total, 0,0,0,0,1)
                     # # TODO: se agrega el objeto
                     # peticion.agregar_peticion(datosobj)
@@ -216,12 +243,13 @@ def post_events():
                 # TODO: se agrega el objeto
                 peticion.agregar_peticion(datosobj)
                 print(datosobj.date, " -->", datosobj.valido)
+                
         except:
-            DTEerror+="     "+str(contadorDTE)+" -> "+str(fechaoriginal)+" ,  \n"
+            DTEerror+="     **ERROR DE ETIQUETA: DTE No."+str(contadorDTE)+" -> "+str(fechaoriginal)+" ,  \n"
             print(DTEerror)
             continue
 
-    peticion.total_fac_buenasymalas(cantidad_Facturas_Buenas, cantidad_Facturas_Malas)
+    # peticion.total_fac_buenasymalas(cantidad_Facturas_Buenas, cantidad_Facturas_Malas)
     
     # fin de la lectura ahora se guardan los datos
     if DTEerror!=[]:
@@ -236,6 +264,10 @@ def post_events():
 def getXMLentrada():
     global entradaglobal
     return Response(response=entradaglobal)
+@app.route('/ConsultaSalida', methods=['GET'])
+def getsalidaordenado():
+    global mensaje_formal_new
+    return Response(response=mensaje_formal_new)
 @app.route('/ConsultamensajeError', methods=['GET'])
 def geterrormessage():
     global mensaje_errores
@@ -248,73 +280,87 @@ def geterrormessage():
 def getDatos():
     global entradaglobal
     global cont_SalidaXML
+    global mensaje_formal_new
+    mensaje_formal_new=""
     stats = peticion.proceso_datos_salida()
     document = minidom.Document()
     print(stats)
 
+
     if stats != []:
         root = document.createElement('SOLICITUD_AUTORIZACION')
         document.appendChild(root)
-
+        mensaje_formal_new+="▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀\n"
+        mensaje_formal_new+= "▬▬▬▬▬▬▬▬▄▄▄▄▄▄████████████Solicitudes de Autorización████████████▄▄▄▄▄▄▄▬▬▬▬▬▬▬▬\n"
         for stat in stats:
             stat_element = document.createElement('AUTORIZACION')
             root.appendChild(stat_element)
 
             date_element = document.createElement('FECHA')
             date_element.appendChild(document.createTextNode(stat['date']))
+            mensaje_formal_new+= "******************** FECHA: "+str(stat['date'])+"*********************\n"
             stat_element.appendChild(date_element)
 
             cant_fac_received = document.createElement('FACTURAS_RECIBIDAS')
             cant_fac_received.appendChild(
                 document.createTextNode(str(stat['cant_facturas'])))
+            mensaje_formal_new+="       ☻  Facturas Recibidas:  "+str(stat['cant_facturas'])+"\n"
             stat_element.appendChild(cant_fac_received)
 
             errors_element = document.createElement('ERRORES')
             stat_element.appendChild(errors_element)
-
+            mensaje_formal_new+="       ☻  Errores: \n"
             nit_emisor = document.createElement('NIT_EMISOR')
             nit_emisor.appendChild(
                 document.createTextNode(str(stat['nitcorrect1'])))
+            mensaje_formal_new+="                 ▬ Nit Emisor:  "+str(stat['nitcorrect1'])+"\n"
             errors_element.appendChild(nit_emisor)
 
             nit_receptor = document.createElement('NIT_RECEPTOR')
             nit_receptor.appendChild(
                 document.createTextNode(str(stat['nitcorrect2'])))
+            mensaje_formal_new+="                 ▬ Nit Receptor:  "+str(stat['nitcorrect2'])+"\n"
             errors_element.appendChild(nit_receptor)
 
             iva = document.createElement('IVA')
             iva.appendChild(document.createTextNode(str(stat['iva'])))
+            mensaje_formal_new+="                 ▬ Iva:  "+str(stat['iva'])+"\n"
             errors_element.appendChild(iva)
 
             total = document.createElement('TOTAL')
             total.appendChild(document.createTextNode(str(stat['total'])))
+            mensaje_formal_new+="                 ▬ Iva:  "+str(stat['total'])+"\n"
             errors_element.appendChild(total)
 
             referencia_duplicada = document.createElement(
                 'REFERENCIA_DUPLICADA')
             referencia_duplicada.appendChild(
                 document.createTextNode(str(stat['referencia'])))
+            mensaje_formal_new+="                 ▬ Referencia Duplicada:  "+str(stat['referencia'])+"\n"
             errors_element.appendChild(referencia_duplicada)
 
             cant_fac_corrects = document.createElement('FACTURAS_CORRECTAS')
             cant_fac_corrects.appendChild(
                 document.createTextNode(str(stat['cant_corrects_fac'])))
+            mensaje_formal_new+="       ☻  Facturas Correctas:  "+str(stat['cant_corrects_fac'])+"\n"
             stat_element.appendChild(cant_fac_corrects)
 
             cant_emisor = document.createElement('CANTIDAD_EMISORES')
             cant_emisor.appendChild(
                 document.createTextNode(str(stat['cant_emisors'])))
+            mensaje_formal_new+="       ☻  Cantidad Emisores:  "+str(stat['cant_emisors'])+"\n"
             stat_element.appendChild(cant_emisor)
 
             cant_receptor = document.createElement('CANTIDAD_RECEPTORES')
             cant_receptor.appendChild(
                 document.createTextNode(str(stat['cant_receptors'])))
+            mensaje_formal_new+="       ☻  Cantidad Receptores:  "+str(stat['cant_receptors'])+"\n"
             stat_element.appendChild(cant_receptor)
 
             list_autorizations = document.createElement(
                 'LISTADO_AUTORIZACIONES')
             stat_element.appendChild(list_autorizations)
-
+            mensaje_formal_new+="       ☻  Listado de Autorizaciones: \n"
             for user in stat['autorizaciones']:
                 aprobacion = document.createElement('APROBACION')
                 list_autorizations.appendChild(aprobacion)
@@ -322,7 +368,7 @@ def getDatos():
                 nit_del_emisor = document.createElement('NIT_EMISOR')
                 nit_del_emisor.appendChild(
                     document.createTextNode(user['nit_emisor']))
-                nit_del_emisor.setAttribute("ref", user['referencia'])
+                nit_del_emisor.setAttribute("ref", user['referencia'])                
                 aprobacion.appendChild(nit_del_emisor)
 
                 codigo_de_aprobacion = document.createElement(
@@ -330,10 +376,12 @@ def getDatos():
                 codigo_de_aprobacion.appendChild(
                     document.createTextNode(str(user['codigo_aprobacion'])))
                 aprobacion.appendChild(codigo_de_aprobacion)
+                mensaje_formal_new+="                 ▬ Código de Aprobación:"+str(user['codigo_aprobacion'])+" con No. referencia:"+str(user['referencia'])+",  Emitido por: "+str(user['nit_emisor'])+"\n"
 
             total_aprobaciones = document.createElement('TOTAL_APROBACIONES')
             total_aprobaciones.appendChild(
                 document.createTextNode(str(stat['total_aprobacion'])))
+            mensaje_formal_new+="       ☻  Aprobaciones Totales:  "+str(stat['total_aprobacion'])+"\n"
             list_autorizations.appendChild(total_aprobaciones)
 
         XML_Salida = document.toprettyxml(indent='\t', newl='\n')
@@ -356,58 +404,102 @@ def postfecha():
     date = request.json['date']
     fecha_resumen = date
     print("Fecha enviada: ", date)
-    return Response(status=204)
+    return jsonify("Se agrego la fecha")
+    # return Response(status=204)
 
 
-@app.route('/ResumenIva_emitido', methods=['GET'])
+@app.route('/ResumenIva', methods=['GET'])
 def getIvas():
     global fecha_resumen
     date = fecha_resumen
     if date != "":
-        iva_emitido = peticion.get_Resumen_Iva_Emitido(date)
-        print(iva_emitido)
-        return jsonify(iva_emitido)
+        ruta_graph = peticion.get_Resumen_Iva(date)
+        print(ruta_graph)
+        return jsonify(ruta_graph)
     else:
-        return jsonify("")
+        return jsonify("No se ha procesado el grafico, verifique sus datos, gracias")
 
 
-@app.route('/ResumenIva_recibido', methods=['GET'])
-def getIvasReceived():
-    global fecha_resumen
-    date = fecha_resumen
-    if date != "":
-        iva_recibido = peticion.get_Resumen_Iva_Recibido(date)
-        return jsonify(iva_recibido)
-    else:
-        return jsonify("")
-
+# @app.route('/ResumenIva_recibido', methods=['GET'])
+# def getIvasReceived():
+#     global fecha_resumen
+#     date = fecha_resumen
+#     if date != "":
+#         iva_recibido = peticion.get_Resumen_Iva_Recibido(date)
+#         return jsonify(iva_recibido)
+#     else:
+#         return jsonify("")
 
 @app.route('/ResumenIva_Fechas', methods=['GET'])
 def getIvasfechas():
+    global list_fechas_sistema
     fechaslist = peticion.get_Resumen_Iva_Fechas()
+    list_fechas_sistema=fechaslist
     if fechaslist != []:
+
         return jsonify(fechaslist)
+    else:
+        return jsonify("No se ha procesado las fechas, talvez no exista esa fecha en el sistema.")
+
+
+#!██████████████████   RESUMEN RANGO    █████████████████████
+# ?POSTEAR LAS FECHAS DEL RANGO Y SU PARAMETRO
+@app.route('/ResumenRango', methods=['POST'])
+def postResumenesRango():
+    global fecha_rangoini
+    global fecha_rangofin
+    global parametro
+    fecha_rangoini = request.json['dateini']
+    fecha_rangofin = request.json['datefin']
+    parametro = request.json['totaloiva']
+    print("Fecha de INICIO: ", fecha_rangoini, "Fecha de FIN: ", fecha_rangofin, " con parametro: ", parametro)
+    print("")
+    return jsonify("Se agregaron los datos")
+
+# ?OBTENER EL RESUMEN RANGO DE LAS FACTURAS
+@app.route('/ResumenRango', methods=['GET'])
+def getResumenesRango():
+    global fecha_rangoini
+    global fecha_rangofin
+    global parametro
+    if fecha_rangoini != "" and fecha_rangofin != "" and parametro != "":
+        ruta_graph = peticion.get_Resumen_Rango(fecha_rangoini, fecha_rangofin, parametro)
+        print(ruta_graph)
+        return jsonify(ruta_graph)
+    else:
+        return jsonify("No se ha procesado el grafico, verifique sus datos, gracias")
+
+# @app.route('/Fechas_Range', methods=['GET'])
+# def getfechasRange():
+#     global list_fechas_sistema
+#     # fechaslist = peticion.get_Resumen_Iva_Fechas()
+    
+#     if list_fechas_sistema != []:
+#         return jsonify(list_fechas_sistema)
+#     else:
+#         return jsonify("")
+@app.route('/Fechas_Range', methods=['GET'])
+def getfechasRange():
+    global list_fechas_sistema
+    list_fechas_sistema = peticion.get_Resumen_Iva_Fechas()
+    # list_fechas_sistema=fechaslist
+    if list_fechas_sistema != []:
+
+        return jsonify(list_fechas_sistema)
     else:
         return jsonify("")
 
 
-#!██████████████████   RESUMEN RANGO    █████████████████████
-# ?OBTENER LOS PACIENTES
-@app.route('/ResumenRango', methods=['GET'])
-def getResumenes():
 
-    pass
-# OBTENER UN DATO
 
+
+11
 #!██████████████████   GRAFICA    █████████████████████
-# ?OBTENER LOS PACIENTES
-
-
+# ?OBTENER LAS GRÁFICAS (SOLO PA PRUEBAS CREO)
 @app.route('/Grafica', methods=['GET'])
 def getGraficas():
 
     pass
-# OBTENER UN DATO
 
 
 if __name__ == '__main__':

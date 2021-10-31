@@ -1,7 +1,7 @@
 <SOLICITUD_AUTORIZACION>
-   <DTE>
+   <DTE> <!-- !TODO BIEN -->
       <TIEMPO> Guatemala, 15/01/2021 15:25 hrs. </TIEMPO>
-      <REFERENCIA> W49884 </REFERENCIA>
+      <REFERENCIA> W4239884 </REFERENCIA>
       <NIT_EMISOR> 7378106 </NIT_EMISOR>
       <NIT_RECEPTOR> 8338817 </NIT_RECEPTOR>
       <VALOR> 100.00 </VALOR>
@@ -9,44 +9,53 @@
       <TOTAL> 112.00 </TOTAL> <!--  VALOR + IVA    -->
    </DTE>
 
-
-   <DTE>
+   <!--! ESTE TIENE REFERENCIA REPETIDA :v -->
+   <DTE>  
       <TIEMPO> Guatemala, 15/01/2021 15:25 hrs. </TIEMPO>
-      <REFERENCIA> W49884 </REFERENCIA>
+      <REFERENCIA> W4239884 </REFERENCIA>
       <NIT_EMISOR> 8338817 </NIT_EMISOR>
       <NIT_RECEPTOR> 7378106 </NIT_RECEPTOR>
       <VALOR> 100.00 </VALOR>
       <IVA> 12.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
       <TOTAL> 112.00 </TOTAL> <!--  VALOR + IVA    -->
    </DTE>
-   <DTE>
+   <DTE> <!-- !TODO BIEN -->
       <TIEMPO> Guatemala, 15/01/2021 15:25 hrs. </TIEMPO>
-      <REFERENCIA> W49884 </REFERENCIA>
+      <REFERENCIA> W49467884 </REFERENCIA>
       <NIT_EMISOR> 7378106 </NIT_EMISOR>
       <NIT_RECEPTOR> 8338817 </NIT_RECEPTOR>
       <VALOR> 100.00 </VALOR>
       <IVA> 12.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
       <TOTAL> 112.00 </TOTAL> <!--  VALOR + IVA    -->
    </DTE>
-   <DTE>
+   <DTE> <!-- !TODO BIEN -->
       <TIEMPO> Guatemala, 15/01/2021 15:25 hrs. </TIEMPO>
-      <REFERENCIA> W49884 </REFERENCIA>
+      <REFERENCIA> W4965884 </REFERENCIA>
       <NIT_EMISOR> 2431739K </NIT_EMISOR>
       <NIT_RECEPTOR> 7378106 </NIT_RECEPTOR>
       <VALOR> 100.00 </VALOR>
       <IVA> 12.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
       <TOTAL> 112.00 </TOTAL> <!--  VALOR + IVA    -->
    </DTE>
-   <DTE>
+   <DTE> <!-- !TODO BIEN -->
       <TIEMPO> Guatemala, 15/01/2021 15:25 hrs. </TIEMPO>
-      <REFERENCIA> W49884 </REFERENCIA>
+      <REFERENCIA> W49345884 </REFERENCIA>
       <NIT_EMISOR> 2431739K </NIT_EMISOR>
       <NIT_RECEPTOR> 7378106 </NIT_RECEPTOR>
       <VALOR> 100.00 </VALOR>
       <IVA> 12.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
       <TOTAL> 112.00 </TOTAL> <!--  VALOR + IVA    -->
    </DTE>
-   <DTE>
+   <DTE> <!-- !TODO BIEN -->
+      <TIEMPO> Guatemala, 15/01/2021 15:25 hrs. </TIEMPO>
+      <REFERENCIA> W498345484 </REFERENCIA>
+      <NIT_EMISOR> 8431523 </NIT_EMISOR>
+      <NIT_RECEPTOR> 2431739K </NIT_RECEPTOR>
+      <VALOR> 100.00 </VALOR>
+      <IVA> 12.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
+      <TOTAL> 112.00 </TOTAL> <!--  VALOR + IVA    -->
+   </DTE>
+   <DTE><!-- !TODO BIEN -->
       <TIEMPO> Guatemala, 15/01/2021 15:25 hrs. </TIEMPO>
       <REFERENCIA> W49884 </REFERENCIA>
       <NIT_EMISOR> 8431523 </NIT_EMISOR>
@@ -55,20 +64,9 @@
       <IVA> 12.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
       <TOTAL> 112.00 </TOTAL> <!--  VALOR + IVA    -->
    </DTE>
-   <DTE>
-      <TIEMPO> Guatemala, 15/01/2021 15:25 hrs. </TIEMPO>
-      <REFERENCIA> W49884 </REFERENCIA>
-      <NIT_EMISOR> 8431523 </NIT_EMISOR>
-      <NIT_RECEPTOR> 2431739K </NIT_RECEPTOR>
-      <VALOR> 100.00 </VALOR>
-      <IVA> 12.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
-      <TOTAL> 112.00 </TOTAL> <!--  VALOR + IVA    -->
-   </DTE>
 
 
-
-
-   <DTE>
+   <DTE> <!--! ESTE TIENE IVA Y TOTAL MALOS OJO -->
       <TIEMPO> Guatemala, 24/12/2021 20:00 hrs. </TIEMPO>
       <REFERENCIA> A1990 </REFERENCIA>
       <NIT_EMISOR> 80400442 </NIT_EMISOR>
@@ -77,7 +75,7 @@
       <IVA> 12.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
       <TOTAL> 92.00 </TOTAL> <!--  VALOR + IVA    -->
    </DTE>
-   <DTE>
+   <DTE> <!-- !TODO BIEN -->
       <TIEMPO> Guatemala, 01/01/2021 15:25 hrs. </TIEMPO>
       <REFERENCIA> F784861 </REFERENCIA>
       <NIT_EMISOR> 5408008 </NIT_EMISOR>
@@ -86,7 +84,7 @@
       <IVA> 18.09 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
       <TOTAL> 168.84 </TOTAL> <!--  VALOR + IVA    -->
    </DTE>
-   <DTE>
+   <DTE> <!-- !TODO BIEN -->
       <TIEMPO> Guatemala, 25/12/2021 7:25 hrs. </TIEMPO>
       <REFERENCIA> T888888888 </REFERENCIA>
       <NIT_EMISOR> 8431523 </NIT_EMISOR>
@@ -95,7 +93,7 @@
       <IVA> 24.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
       <TOTAL> 224.00 </TOTAL> <!--  VALOR + IVA    -->
    </DTE>
-   <DTE>
+   <DTE> <!-- !TODO BIEN -->
       <TIEMPO> Guatemala, 31/10/2021 00:00 hrs. </TIEMPO>
       <REFERENCIA> T56488 </REFERENCIA>
       <NIT_EMISOR> 8431523 </NIT_EMISOR>
@@ -104,17 +102,25 @@
       <IVA> 600.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
       <TOTAL> 5600.00 </TOTAL> <!--  VALOR + IVA    -->
    </DTE>
+
+   <!--! ERROR DE DTE TIEMPO Y NIT TALVEZ :v-->
+   <DTE> 
+      <TIMEXD> Guatemala, 05/11/2021 15:25 hrs. </TIMEXD>
+      <REFERENCIA> W4237820844 </REFERENCIA>
+      <NIT_EMISOR> 73781864981 </NIT_EMISOR>
+      <NIT_RECEPTOR> 8338817 </NIT_RECEPTOR>
+      <VALOR> 900.00 </VALOR>
+      <IVA> 108.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
+      <TOTAL> 1008.00 </TOTAL> <!--  VALOR + IVA    -->
+   </DTE>
+   
+   <DTE>  <!-- !TODO BIEN -->
+      <TIEMPO> Guatemala, 08/05/2021 15:25 hrs. </TIEMPO>
+      <REFERENCIA> T5885 </REFERENCIA>
+      <NIT_EMISOR> 2431739K </NIT_EMISOR>
+      <NIT_RECEPTOR> 8338817 </NIT_RECEPTOR>
+      <VALOR> 900.00 </VALOR>
+      <IVA> 108.00 </IVA> <!--  REDONDEAR(VALOR * 0.12, 2).  -->
+      <TOTAL> 1008.00 </TOTAL> <!--  VALOR + IVA    -->
+   </DTE>
 </SOLICITUD_AUTORIZACION>
-<!-- [{'date': '15/01/2021', 'cant_facturas': 1, 'nitcorrect1': 0, 'nitcorrect2': 0, 'iva': 0, 'total': 0, 'referencia': 0, 'cant_corrects_fac': 1, 'cant_emisors': 4, 'cant_receptors': 4, 'autorizaciones': [{'nit_emisor': '737810', 'codigo_aprobacion': '2021011500000001', 'referencia': ' w49884 '}], 'total_aprobacion': 1},
-
-
-{'date': '24/12/2021', 'cant_facturas': 1, 'nitcorrect1': 0, 'nitcorrect2': 0, 'iva': 1, 'total': 1, 'referencia': 0, 'cant_corrects_fac': 0, 'cant_emisors': 4, 'cant_receptors': 4, 'autorizaciones': [], 'total_aprobacion': 0}, 
-
-
-{'date': '01/01/2021', 'cant_facturas': 1, 'nitcorrect1': 0, 'nitcorrect2': 0, 'iva': 0, 'total': 0, 'referencia': 0, 'cant_corrects_fac': 1, 'cant_emisors': 4, 'cant_receptors': 4, 'autorizaciones': [{'nit_emisor': '540800', 'codigo_aprobacion': '2021010100000001', 'referencia': ' f784861 '}], 'total_aprobacion': 1}, 
-
-
-{'date': '25/12/2021', 'cant_facturas': 1, 'nitcorrect1': 0, 'nitcorrect2': 0, 'iva': 0, 'total': 0, 'referencia': 0, 'cant_corrects_fac': 1, 'cant_emisors': 4, 'cant_receptors': 4, 'autorizaciones': [{'nit_emisor': '843152', 'codigo_aprobacion': '2021122500000001', 'referencia': ' t888888888 '}], 'total_aprobacion': 1}, 
-
-
-{'date': '31/10/2021', 'cant_facturas': 1, 'nitcorrect1': 0, 'nitcorrect2': 0, 'iva': 0, 'total': 0, 'referencia': 0, 'cant_corrects_fac': 1, 'cant_emisors': 4, 'cant_receptors': 4, 'autorizaciones': [{'nit_emisor': '843152', 'codigo_aprobacion': '2021103100000001', 'referencia': ' t56488 '}], 'total_aprobacion': 1}] -->

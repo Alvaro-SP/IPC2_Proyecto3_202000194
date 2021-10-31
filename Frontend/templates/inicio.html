@@ -22,7 +22,7 @@
                     <h2>SALIDA</h2>
                 </td>
             </tr>
-            <tr>
+            <tr align="center">
                 <td>
                     <textarea name="input" wrap="on" id="textareaENTRADA" cols="70" rows="20" wrap="on"
                         enabled>{{ Entrada }}</textarea>
@@ -34,15 +34,36 @@
             </tr>
         </table>
         <br>
+
         <table>
-            <tr align="center"><h2>ERRORES</h2></tr>
-            <tr><div id="error"></div></tr>
+            <tr align="center">
+                <h2>SALIDA ENTENDIBLE: </h2>
+            </tr>
+            <tr>
+                <div id="outputentendible">
+                    <textarea name="output2" id="textareaSALIDA2" wrap="on" cols="120" rows="35"
+                    enabled>{{ Salida2 }} </textarea>
+
+                </div>
+            </tr>
+        </table>
+        <br>
+        
+        
+        <table>
+            <tr align="center">
+                <h2>ERRORES</h2>
+            </tr>
+            <tr>
+                <div id="error"></div>
+            </tr>
         </table>
         <br>
         <br>
     </div>
 
 </section>
+
 <script>
     const documentInput = document.getElementById('documentoXML');
 
@@ -68,15 +89,15 @@
     function leer(ev) {
         sessionStorage.setItem("Para_Mostar_XML", ev.target.result);
     }
-    
 
-    
+
+
     function EnviarProceso() {
         //! ----------AQUI SE OBTIENE EL TEXTO DE ENTRADA DESDE EL SESSION STORAGE
         // var DatosArchivoXMLCargado = sessionStorage.Para_Mostar_XML
 
         //! ----------AQUI SE OBTIENE EL TEXTO DE ENTRADA NORMAL
-        var DatosArchivoXMLCargado =  document.getElementById('textareaENTRADA').value;
+        var DatosArchivoXMLCargado = document.getElementById('textareaENTRADA').value;
         console.log(DatosArchivoXMLCargado)
         var objetoDatosXML = {
             'XMLdatos': DatosArchivoXMLCargado
@@ -105,7 +126,7 @@
 
             })
     }
-    
+
     function restart() {
         //▬▬▬▬▬▬▬██████  Aquí se envia el parametro de eliminar todo ██████▬▬▬▬▬▬▬
         sessionStorage.setItem("Para_Mostar_XML", "")
@@ -124,5 +145,153 @@
         location.href = "http://localhost:8000/misdatos"
     }
 
+
 </script>
+
+
 {% endblock content %}
+
+{% block pdf %}
+<section>
+    <!-- <button onclick="returnback()" class="au-btn au-btn--block au-btn--green m-b-20" type="button">Aceptar y
+        Regresar</button> -->
+    <button onclick="PDF()" style="text-align: center; margin-left: 42%;"
+        class="au-btn au-btn--submit au-btn--green m-b-20" type="button">CAPTURA PDF</button>
+    <button onclick="PDF_GETDATA()" style="text-align: center; margin-left: 42%;"
+        class="au-btn au-btn--submit au-btn--red m-b-20" type="button">Generar y Descargar PDF</button>
+    <!-- !▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬ -->
+    <script>
+
+        function PDF_GETDATA() {
+
+            var n2 = parseInt(sessionStorage.n) + 1
+
+            //OBTENGO LOS DATOS DE LOS TEXT
+            // var date = document.querySelector('#date').value
+            // var paciente = document.querySelector('#paciente').value
+
+            // var descripcion = document.querySelector('#descripcion').value
+            var descripcion = document.getElementById('textareaSALIDA2').value
+            // var enfermedades = document.querySelector('#enfermedades')
+            // enfermedades = enfermedades.options[enfermedades.selectedIndex].text;
+            //████████████████var doctor=sessionStorage.Nombredoctor
+
+            var pdf = new jsPDF();
+            var bodytab = document.getElementById("tablapedido");
+            var tabjson = pdf.autoTableHtmlToJson(bodytab);
+            var headerTxt = " REPORTE                                          CONSULTA DE DATOS"
+            var enca1 = "Dirección: 11 Avenida, Cdad. de Guatemala 01012"
+            var enca2 = "el de la SAT: 77753993"
+            var doctor = sessionStorage.doclogeado
+            console.log(doctor)
+
+            pdf.setTextColor(0, 0, 0);
+            pdf.setFontSize(9);
+            pdf.text(20, 20, 'Dirección: 11 Avenida, Cdad. de Guatemala 01012');
+            pdf.text(20, 25, 'Telefono: 77753993');
+            pdf.text(20, 30, 'Lugar: Guatemala');
+
+            pdf.setFontSize(12);
+
+
+
+            pdf.setDrawColor(0);
+            pdf.setFillColor(51, 153, 255);
+            pdf.rect(20, 35, 80, 8, 'FD'); // filled red square with black borders
+            pdf.setDrawColor(0);
+            pdf.setFillColor(224, 224, 224);
+            pdf.rect(20, 43, 80, 8, 'FD'); // filled red square
+            pdf.setTextColor(255, 255, 255);
+            pdf.text(22, 40, 'NOMBRE DE REPORTE:');
+            pdf.setTextColor(0, 0, 0);
+            pdf.text(25, 49, 'Consultar Datos');// 
+
+            // //PACIENTE 
+            // pdf.setDrawColor(0);
+            // pdf.setFillColor(51, 153, 255);
+            // pdf.rect(20, 51, 80, 8, 'FD'); // filled red square with black borders
+            // pdf.setDrawColor(0);
+            // pdf.setFillColor(224, 224, 224);
+            // pdf.rect(20, 59, 80, 8, 'FD'); // filled red square
+            // pdf.setTextColor(255, 255, 255);
+            // pdf.text(22, 57, 'NOMBRE DEL PACIENTE:');
+            // pdf.setTextColor(0, 0, 0);
+            // pdf.text(25, 65, `   ${paciente}`);
+
+
+            //NO FACTURA Y FECHA
+            pdf.setDrawColor(0);
+            pdf.setFillColor(51, 153, 255);
+            pdf.rect(130, 20, 36, 8, 'FD'); // filled red square with black borders
+            pdf.setDrawColor(0);
+            pdf.setFillColor(51, 153, 255);
+            pdf.rect(160, 20, 30, 8, 'FD'); // filled red square with black borders
+            pdf.setTextColor(255, 255, 255);
+            pdf.text(130, 26, 'No. PDF');
+            pdf.text(160, 26, '    FECHA');
+
+
+            pdf.setDrawColor(0);
+            pdf.setFillColor(224, 224, 224);
+            pdf.rect(130, 28, 36, 8, 'FD'); // filled red square with black borders
+            pdf.setDrawColor(0);
+            pdf.setFillColor(224, 224, 224);
+            pdf.rect(160, 28, 30, 8, 'FD'); // filled red square with black borders
+            pdf.setTextColor(0, 0, 0);
+            pdf.text(130, 34, '         1');
+            pdf.text(160, 34, '     04/11/2021');
+
+            //ID CLIENTE Y TÉRMINOS
+            pdf.setDrawColor(0);
+            pdf.setFillColor(51, 153, 255);
+            pdf.rect(130, 40, 60, 8, 'FD'); // filled red square with black borders
+            pdf.setDrawColor(0);
+            pdf.setFillColor(51, 153, 255);
+            pdf.rect(130, 40, 60, 8, 'FD'); // filled red square with black borders
+            pdf.setTextColor(255, 255, 255);
+            pdf.text(130, 46, '         NO. CORRELACION ');
+            pdf.text(160, 46, `                 `);
+
+            pdf.setDrawColor(0);
+            pdf.setFillColor(224, 224, 224);
+            pdf.rect(130, 48, 60, 8, 'FD'); // filled red square with black borders
+            pdf.setDrawColor(0);
+            pdf.setFillColor(224, 224, 224);
+            pdf.rect(130, 48, 60, 8, 'FD'); // filled red square with black borders
+            pdf.setTextColor(0, 0, 0);
+            pdf.text(130, 54, '       S875');
+            pdf.text(160, 54, ` `);
+            
+
+
+
+
+            var columns = ["Texto de Salida"];
+            var data = [
+                [` ${descripcion}`],
+            ];
+
+
+
+            var header = function (data) {
+                pdf.setFontSize(18);
+                pdf.setTextColor(10);
+                pdf.setFontStyle('normal');
+                //doc.addImage(headerImgData, 'JPEG', data.settings.margin.left, 20, 50, 50);
+                pdf.text(headerTxt, data.settings.margin.left, 10);
+
+            };
+            var options = {
+                beforePageContent: header,
+                margin: { top: 15 },
+                startY: 70
+            };
+            pdf.autoTable(columns, data, options);
+            pdf.save('PDF_GET_DATA.pdf');
+
+            sessionStorage.setItem("n", n2)
+        }
+
+    </script>
+    </section>
+{% endblock pdf %}

@@ -1,5 +1,147 @@
-{% extends 'base.html' %}
+{% extends 'resumeniva.html' %}
 {% block content %}
 
+<div class="container">
+    <br>
+    <h1>Resumen por rango de fechas: </h1>
+    <div class="row">
+
+        <table align="center" width="100%">
+            
+            <tr >
+                
+                <td>
+                    <div class="row">
+                        <br>
+                        <h3>   Filtro Fecha de Inicio: </h3>
+                        <br>
+                        <div class="input-group mb-3">
+                            <!-- <label class="input-group-text" for="inputGroupSelect01">Fechas en Sistema: </label> -->
+                            <select class="form-select form-select-lg mb-1" id="inputGroupSelect01">
+                                
+                                <option selected>Seleccione la fecha de inicio...</option>
+                                {% for fecha1 in fechaslist1 %}
+                                <option id="selectDateIni" value="{{ fecha1 }}">{{ fecha1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </td>
+                <td >
+                    <div class="row">
+                        <br>
+                        <h3>Filtro Fecha de Finalización: </h3>
+                        <br>
+                        <div class="input-group mb-3">
+                            <select class="form-select form-select-lg mb-1" id="inputGroupSelect02">
+                                <option selected>Seleccione la fecha de fin...</option>
+                                {% for fecha2 in fechaslist2 %}
+                                <option id="selectDateFin" value="{{ fecha2 }}">{{ fecha2 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </td>
+                
+                <td >
+                    <div class="row">
+                        <br>
+                        <h3>Filtro Valor Total o Sin Iva: </h3>
+                        <br>
+                        <div class="input-group mb-3">
+                            <select class="form-select form-select-lg mb-1" id="inputGroupSelect03">
+                                <option selected>Seleccione el tipo de valores...</option>
+                                <option id="total" value="total">Ver Valores Totales</option>
+                                <option id="sin_iva" value="siniva">Ver Valores Sin Iva</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
+
+
+
+
+
+
+        <br>
+        <br>
+        <br>
+
+        <div align="center"><button type="submit" onclick="generateGraphic()" class="btn btn-primary ">Generar
+                grafica</button></div>
+        <br><br>
+        <div id="metergraph" align="center">
+        </div>
+        <br>
+
+    </div><br><br>
+</div>
+<script>
+
+    function generateGraphic() {
+        datos = []
+        labels = []
+        let selectFecha1 = document.getElementById("inputGroupSelect01").value
+        let selectFecha2 = document.getElementById("inputGroupSelect02").value
+        let parametro = document.getElementById("inputGroupSelect03").value
+        var selectFechaobj = {
+            'dateini': selectFecha1,
+            'datefin': selectFecha2,
+            'totaloiva': parametro
+        }
+        fetch('http://localhost:5000/ResumenRango', {
+            method: 'POST',
+            body: JSON.stringify(selectFechaobj),
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            }
+        }).then(response => response.json())
+            .catch(error => {
+                console.error('Error:', err)
+                alert("Ocurrio un error, ver la consola")
+            })
+            .then(res => {
+                console.log(res)
+                alert(res)
+            })
+
+
+
+
+        fetch(`http://localhost:5000/ResumenRango`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            }
+        })
+            .then(res => res.json())
+            .catch(err => {
+                console.error('Error:', err)
+                alert("Ocurrio un error, ver la consola")
+            })
+            .then(res => {
+                console.log(res)
+                const block = document.getElementById('metergraph');
+
+                let strh = `<br>
+                <h3>Filtro Intervalo de fechas</h3><br>
+                <img src="/static/images/`+ res + `" alt="Fuente: Elaboración propia">`;
+                block.innerHTML = strh;
+                console.log('!!All Well!!')
+                alert("!!Graph create Correctly !!")
+            })
+
+
+
+    }
+
+</script>
 
 {% endblock content %}

@@ -1,0 +1,167 @@
+{% extends 'resumeniva.html' %}
+
+{% block content %}
+<div class="container" style="position: relative">
+    <h1 align="center">Documentación del Programa</h1>
+    <h3>Servicio web desarrollado para la Superintendencia de Administración Tributaria que pueda ser consumido desde
+        Internet. <br>Se recibe un mensaje con los datos para solicitar la autorización de un Documento Tributario
+        Electrónico (DTE) emitido por un contribuyente y como respuesta se emite un número único de autorización, este
+        número es un correlativo que inicia con el valor 1 cada día y no se repite de nuevo en ese día. </h3>
+    <h3>Ejemplo del Correlativo</h3><br>
+    <h4> <b> yyyy </b> corresponde al año en que se solicita la autorización.<br>
+        <b> mm </b> corresponde al mes en que se solicita la autorización.<br>
+        <b> dd </b> corresponde al día en que se solicita la autorización.<br>
+        <b> ######## </b> corresponde al correlativo precedido por la cantidad de
+        para mantener el formato: Ej. Para el correlativo 1: 00000001.<br>
+    </h4>
+</div>
+
+<div align="center">
+    <h3>Mensaje del proveedor:</h3>
+    <img align="center" src="/static/images/aren.png" alt="Fuente: Enunciado">
+    <h3>Reglas y consideraciones del formato para cada mensaje recibido:
+    </h3>
+</div>
+
+<div class="container" align="center">
+    <div class="col-md-3 col-sm-4" align="center">
+        <div class="card-header">
+            <h4 align="center">FECHA </h4>
+        </div>
+        <div class="card-body">
+            <div class="mx-auto d-block">
+                <img align="center" height="650" width="650" class="rounded-circle mx-auto d-block"
+                    src="/static/images/fecha.jpg" alt="Card image cap">
+                <h3 align="center" class="text-sm-center mt-2 mb-1">en formato </h3>
+            </div>
+            <hr>
+            <div class="card-text text-sm-center">
+                <a class="item">
+                    <button value=${firstplace} type="item" class="btn btn-warning">dd/mm/yyyy</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-4" align="center">
+        <div class="card-header">
+            <h4 align="center">REFERENCIA</h4>
+        </div>
+        <div class="card-body">
+            <div class="mx-auto d-block">
+                <img align="center" height="650" width="650" class="rounded-circle mx-auto d-block"
+                    src="/static/images/referencia.jpg" alt="Card image cap">
+                <h3 align="center" class="text-sm-center mt-2 mb-1"> de máximo 40 posiciones.</h3>
+            </div>
+            <hr>
+            <div class="card-text text-sm-center">
+                <a class="item">
+                    <button value=${secondplace} onclick="AddCesta(this)" type="item" class="btn btn-warning">texto
+                        único</button>
+                </a>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4" align="center">
+        <div class="card-header">
+
+            <h4 align="center">NIT EMISOR Y RECEPTOR</h4>
+        </div>
+        <div class="card-body">
+            <div class="mx-auto d-block">
+                <img align="center" height="650" width="650" class="rounded-circle mx-auto d-block"
+                    src="/static/images/nit.png" alt="Card image cap">
+                <h3 align="center" class="text-sm-center mt-2 mb-1"> 1 hasta 20 caracteres </h3>
+            </div>
+            <hr>
+            <div class="card-text text-sm-center">
+                <a class="item">
+                    <button value=${thirdplace} type="item" class="btn btn-warning">XXXXXXV</button>
+                </a>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4" align="center">
+        <div class="card-header">
+            <h4 align="center">VALOR
+
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="mx-auto d-block">
+                <img align="center" height="500" width="500" class="rounded-circle mx-auto d-block"
+                    src="/static/images/valor.png" alt="Card image cap">
+                <h3 align="center" class="text-sm-center mt-2 mb-1"> real positivo </h3>
+            </div>
+            <hr>
+            <div class="card-text text-sm-center">
+                <a class="item">
+                    <button value=${thirdplace} type="item" class="btn btn-warning">2 decimales</button>
+                </a>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4" align="center">
+        <div class="card-header">
+
+            <h4 align="center">IVA</h4>
+        </div>
+        <div class="card-body" align="center">
+            <div class="mx-auto d-block">
+                <img height="650" width="650" style="height: 650; width: 650;" class="rounded-circle mx-auto d-block"
+                    src="/static/images/iva.jpg" alt="Card image cap">
+                <h3 align="center" class="text-sm-center mt-2 mb-1">(VALOR*0.12, 2)</h3>
+            </div>
+            <hr>
+            <div class="card-text text-sm-center">
+                <a class="item">
+                    <button value=${thirdplace} type="item" class="btn btn-warning">Operacion</button>
+                </a>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="container" >
+    <h3 align="center"> Algoritmo de validación de NIT: </h3><br>
+    <h4>1.   Multiplique cada carácter por su posición respectiva (siendo la posición 1 el carácter más a la derecha), excepto el primero. <br>
+        2.   Sume todos los resultados. <br>
+        3.   Obtenga el módulo 11 de la sumatoria. <br>
+        4.   A 11 réstale el resultado obtenido en el punto 3. <br>
+        5.   Calcule el módulo 11 del resultado obtenido en el punto No. 4, si este resultado es 10, entonces el dígito verificador del NIT deberá ser K.<br>
+    </h4>
+</div>
+<div class="container" align="center">
+    <h3 > Arquitectura de la Pagina web: </h3><br>
+    <img height="650" width="650" style="height: 650; width: 650;" class="rounded-circle mx-auto d-block"
+                    src="/static/images/arq.png" alt="Card image cap">
+</div>
+
+<div class="container" align="center">
+    <h2>BACKEND</h2>
+    <h4>
+        API que brinda servicios utilizando el protocolo HTTP, su funcionalidad principal es procesar los datos recibidos del Frontend (PROGRAMA ACTUAL), luego de procesar los datos se almacenan en uno o varios archivos xml, , este servicio también tiene la funcionalidad de devolver los datos que fueron almacenados.
+    </h4>
+</div>
+
+<div class="container" align="center">
+    <h3 > Arquitectura de la API: </h3><br>
+    <img height="650" width="650" style="height: 650; width: 650;" class="rounded-circle mx-auto d-block"
+                    src="/static/images/api.png" alt="Card image cap">
+</div>
+
+
+
+{% endblock content %}
+{% block pdf %}
+{% endblock pdf %}

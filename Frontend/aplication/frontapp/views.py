@@ -13,11 +13,13 @@ def index(request):
     if request.method == 'GET':        
         peticionDatos= requests.get('http://localhost:5000/ConsultaDatos')
         peticionEntrada =requests.get('http://localhost:5000/ConsultaXMLentrada')
+        peticionDatos2 =requests.get('http://localhost:5000/ConsultaSalida')
         # mensajeerror =requests.get('http://localhost:5000/ConsultamensajeError')
         
         context = {
             'Salida': peticionDatos.text,
             'Entrada': peticionEntrada.text,
+            'Salida2': peticionDatos2.text,
             # 'mensaje': mensajeerror.text,
         }
         # print(peticionDatos.text)
@@ -40,21 +42,35 @@ def index(request):
 
 def resumeniva(request):
     if request.method == 'GET':
-        payload = {"fechaslist":"usernae","password":"password"}
-        peticionDatos= requests.get('http://localhost:5000/ResumenIva_emitido')
-        peticionDatos2= requests.get('http://localhost:5000/ResumenIva_recibido', json=payload)
+        # payload = {"fechaslist":"usernae","password":"password"}
+        peticionDatos= requests.get('http://localhost:5000/ResumenIva')
+        # peticionDatos2= requests.get('http://localhost:5000/ResumenIva_recibido', json=payload)
         fechas=requests.get('http://localhost:5000/ResumenIva_Fechas')
         print("████████████")         
-        
+        print(peticionDatos.text)
         context = {
             'fechaslist': json.loads(fechas.text),
-            'iva_emitido': json.loads(peticionDatos.text),
-            'iva_recibido': json.loads(peticionDatos2.text),
+            'iva_ruta': json.loads(peticionDatos.text),
+            # 'iva_recibido': json.loads(peticionDatos2.text),
         }
         return render(request, 'resumeniva.html', context)
 
 def resumenrango(request):
-    return render(request, 'resumenrango.html')
+    if request.method == 'GET':
+        # payload = {"fechaslist":"usernae","password":"password"}
+        peticionDatos= requests.get('http://localhost:5000/ResumenRango')
+        # peticionDatos2= requests.get('http://localhost:5000/ResumenIva_recibido', json=payload)
+        fechas1=requests.get('http://localhost:5000/Fechas_Range')
+        # fechas2=requests.get('http://localhost:5000/ResumenIva_Fechas')
+        print("████████████")         
+        print(peticionDatos.text)
+        context = {
+            'fechaslist1': json.loads(fechas1.text),
+            'fechaslist2': json.loads(fechas1.text),
+            'iva_ruta': json.loads(peticionDatos.text),
+            # 'iva_recibido': json.loads(peticionDatos2.text),
+        }
+        return render(request, 'resumenrango.html', context)
 
 
 
@@ -75,37 +91,7 @@ def Graficas(request):
 
 def misdatos(request):
     return render(request, 'misdatos.html')
-def reports(request):
-    if request.method == 'GET':
-        date = request.GET.get('date', None)
-        code = request.GET.get('code', None)
+    
+def docu(request):
+    return render(request, 'Docu.html')
 
-        context = {
-            'date': None,
-            'code': None,
-        }
-        if date is not None:
-            context['date'] = date
-
-        if code is not None:
-            context['code'] = code
-        return render(request, 'reports.html', context)
-
-
-def calc(request):
-    if request.method == 'GET':
-        num_1 = request.GET.get('num_1', 0)
-        num_2 = request.GET.get('num_2', 0)
-
-        url = endpoint.format('/potencia')
-
-        potencia = requests.get(url, {
-            'num_1': num_1,
-            'num_2': num_2,
-        })
-
-        context = {
-            'potencia': potencia.text,
-        }
-
-        return render(request, 'calc.html', context)

@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 <div class="container">
     <br>
-    <h1>Filtro por fecha</h1>
+    <h1>Resumen de IVA por fecha y NIT: </h1>
+
     <div class="row">
-        <div class="col">
+        <div class="row">
             <br>
+            <h3>Filtro por fecha</h3>
             <br>
             <div class="input-group mb-3">
                 <label class="input-group-text" for="inputGroupSelect01">Fechas en Sistema: </label>
@@ -20,73 +23,239 @@
             <br>
             <br>
             <br>
-            <button type="submit" onclick="generateGraphic()" class="btn btn-primary">Generar grafica</button>
+            <div align="center"><button type="submit" onclick="generateGraphic()" class="btn btn-primary ">Generar
+                    grafica</button></div><br><br>
+
         </div>
-        <div class="col">
-            <br>
-            <br>
-            <canvas id="myChart"></canvas>
+        <div id="metergraph" align="center">
+
         </div>
+        <br>
+
     </div>
+    <br><br>
+</div>
 
-
-    <script>
-        console.log()
-        let miCanvas = document.getElementById("myChart").getContext("2d")
-
-        function generateGraphic() {
-            datos = []
-            labels = []
-            let selectFecha = document.getElementById("inputGroupSelect01").value
-            var selectFechaobj = {
-                'date': selectFecha
+<script>
+    let miCanvas = document.getElementById("myChart").getContext("2d")
+    var imgData;
+    var myImage = new Image();
+    function generateGraphic() {
+        datos = []
+        labels = []
+        let selectFecha = document.getElementById("inputGroupSelect01").value
+        var selectFechaobj = {
+            'date': selectFecha
+        }
+        fetch('http://localhost:5000/ResumenIva', {
+            method: 'POST',
+            body: JSON.stringify(selectFechaobj),
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
             }
-            fetch('http://localhost:5000/ResumenIva', {
-                method: 'POST',
-                body: JSON.stringify(selectFechaobj),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                }
-            }).then(response => response.json())
-                .catch(error => {
-                    console.error('Error:', err)
-                    alert("Ocurrio un error, ver la consola")
-                })
-                .then(res => {
-                    console.log('!!All Well!!')
-                    alert("!!  Data Sent Correctly !!")
-                })
-
-
-
-
-
-            console.log("██████████")
-            fetch(`http://localhost:5000/ResumenIva_emitido`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                }
+        }).then(response => response.json())
+            .catch(error => {
+                console.error('Error:', err)
+                alert("Ocurrio un error, ver la consola")
             })
-                .then(res => res.json())
-                .catch(err => {
-                    console.error('Error:', err)
-                    alert("Ocurrio un error, ver la consola")
-                })
-                .then(res => {
-                    console.log(res)
-                    alert("!!Data request Correctly !!")
-
-                })
+            .then(res => {
+                console.log(res)
+                alert(res)
+            })
 
 
-            
+
+
+        fetch(`http://localhost:5000/ResumenIva`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            }
+        })
+            .then(res => res.json())
+            .catch(err => {
+                console.error('Error:', err)
+                alert("Ocurrio un error, ver la consola")
+            })
+            .then(res => {
+                console.log(res)
+                const block = document.getElementById('metergraph');
+
+                let strh = `<br>
+                <h3>Filtro por fecha</h3><br>
+                <img src="/static/images/`+ res + `" alt="texto descriptivo">`;
+                imgData = "/static/images/" + res;
+                block.innerHTML = strh;
+                console.log('!!All Well!!')
+                alert("!!Graph create Correctly !!")
+
+            })
+
+
+
+    }
+
+</script>
+{% endblock content %}
+{% block pdf %}
+<section>
+    <button onclick="returnback()" class="au-btn au-btn--block au-btn--green m-b-20" type="button">Aceptar y
+        Regresar</button>
+    <button onclick="PDF()" style="text-align: center; margin-left: 42%;"
+        class="au-btn au-btn--submit au-btn--green m-b-20" type="button">CAPTURAR PDF</button>
+    <button onclick="PDF_GETDATA()" style="text-align: center; margin-left: 42%;"
+        class="au-btn au-btn--submit au-btn--green m-b-20" type="button">Generar y Descargar PDF</button>
+    <script>
+
+        function PDF_GETDATA() {
+
+            var n2 = parseInt(sessionStorage.n) + 1
+
+            //OBTENGO LOS DATOS DE LOS TEXT
+            // var date = document.querySelector('#date').value
+            // var paciente = document.querySelector('#paciente').value
+
+            // var descripcion = document.querySelector('#descripcion').value
+            var descripcion = document.getElementById("inputGroupSelect01").value
+            // var enfermedades = document.querySelector('#enfermedades')
+            // enfermedades = enfermedades.options[enfermedades.selectedIndex].text;
+            //████████████████var doctor=sessionStorage.Nombredoctor
+
+            var pdf = new jsPDF();
+            var bodytab = document.getElementById("tablapedido");
+            var tabjson = pdf.autoTableHtmlToJson(bodytab);
+            var headerTxt = " REPORTE                                          CONSULTA DE DATOS"
+            var enca1 = "Dirección: 11 Avenida, Cdad. de Guatemala 01012"
+            var enca2 = "el de la SAT: 77753993"
+
+
+            pdf.setTextColor(0, 0, 0);
+            pdf.setFontSize(9);
+            pdf.text(20, 20, 'Dirección: 11 Avenida, Cdad. de Guatemala 01012');
+            pdf.text(20, 25, 'Telefono: 77753993');
+            pdf.text(20, 30, 'Lugar: Guatemala');
+
+            pdf.setFontSize(12);
+
+
+
+            pdf.setDrawColor(0);
+            pdf.setFillColor(51, 153, 255);
+            pdf.rect(20, 35, 80, 8, 'FD'); // filled red square with black borders
+            pdf.setDrawColor(0);
+            pdf.setFillColor(224, 224, 224);
+            pdf.rect(20, 43, 80, 8, 'FD'); // filled red square
+            pdf.setTextColor(255, 255, 255);
+            pdf.text(22, 40, 'NOMBRE DE REPORTE:');
+            pdf.setTextColor(0, 0, 0);
+            pdf.text(25, 49, 'Consultar Datos');// 
+
+            // //PACIENTE 
+            // pdf.setDrawColor(0);
+            // pdf.setFillColor(51, 153, 255);
+            // pdf.rect(20, 51, 80, 8, 'FD'); // filled red square with black borders
+            // pdf.setDrawColor(0);
+            // pdf.setFillColor(224, 224, 224);
+            // pdf.rect(20, 59, 80, 8, 'FD'); // filled red square
+            // pdf.setTextColor(255, 255, 255);
+            // pdf.text(22, 57, 'NOMBRE DEL PACIENTE:');
+            // pdf.setTextColor(0, 0, 0);
+            // pdf.text(25, 65, `   ${paciente}`);
+
+
+            //NO FACTURA Y FECHA
+            pdf.setDrawColor(0);
+            pdf.setFillColor(51, 153, 255);
+            pdf.rect(130, 20, 36, 8, 'FD'); // filled red square with black borders
+            pdf.setDrawColor(0);
+            pdf.setFillColor(51, 153, 255);
+            pdf.rect(160, 20, 30, 8, 'FD'); // filled red square with black borders
+            pdf.setTextColor(255, 255, 255);
+            pdf.text(130, 26, 'No. PDF');
+            pdf.text(160, 26, '    FECHA');
+
+
+            pdf.setDrawColor(0);
+            pdf.setFillColor(224, 224, 224);
+            pdf.rect(130, 28, 36, 8, 'FD'); // filled red square with black borders
+            pdf.setDrawColor(0);
+            pdf.setFillColor(224, 224, 224);
+            pdf.rect(160, 28, 30, 8, 'FD'); // filled red square with black borders
+            pdf.setTextColor(0, 0, 0);
+            pdf.text(130, 34, '         1');
+            pdf.text(160, 34, '     04/11/2021');
+
+            //ID CLIENTE Y TÉRMINOS
+            pdf.setDrawColor(0);
+            pdf.setFillColor(51, 153, 255);
+            pdf.rect(130, 40, 60, 8, 'FD'); // filled red square with black borders
+            pdf.setDrawColor(0);
+            pdf.setFillColor(51, 153, 255);
+            pdf.rect(130, 40, 60, 8, 'FD'); // filled red square with black borders
+            pdf.setTextColor(255, 255, 255);
+            pdf.text(130, 46, '         FECHA GENERADA ');
+            pdf.text(160, 46, `                 `);
+
+            pdf.setDrawColor(0);
+            pdf.setFillColor(224, 224, 224);
+            pdf.rect(130, 48, 60, 8, 'FD'); // filled red square with black borders
+            pdf.setDrawColor(0);
+            pdf.setFillColor(224, 224, 224);
+            pdf.rect(130, 48, 60, 8, 'FD'); // filled red square with black borders
+            pdf.setTextColor(0, 0, 0);
+            pdf.text(130, 54, `        ${descripcion}`);
+            pdf.text(160, 54, ` `);
+
+
+
+
+
+            var columns = ["GRÁFICO DE RESUMEN DE IVA POR CADA NIT"];
+            var data = [
+                [` ${descripcion}`],
+            ];
+            // console.log(imgData)
+            // pdf.addImage(imgData, 'JPEG', 10, 40, 180, 180);
+            // imgData.onload = function(){
+            // pdf.addImage(imgData , 'JPEG', 10, 40, 180, 180);
+            // console.log("siuuuuuuuuuuuuuu")
+            // // doc.save('myPDF.pdf');
+            // };
+            var elementHandler = {
+                '#ignorePDF': function (element, renderer) {
+                    return true;
+                }
+            };
+            var source = window.document.getElementsByTagName("body")[0];
+            pdf.fromHTML(
+                source,
+                15,
+                15,
+                {
+                    'width': 180, 'elementHandlers': elementHandler
+                });
+
+            var header = function (data) {
+                pdf.setFontSize(18);
+                pdf.setTextColor(10);
+                pdf.setFontStyle('normal');
+                //doc.addImage(headerImgData, 'JPEG', data.settings.margin.left, 20, 50, 50);
+                pdf.text(headerTxt, data.settings.margin.left, 10);
+
+            };
+            var options = {
+                beforePageContent: header,
+                margin: { top: 15 },
+                startY: 70
+            };
+            pdf.autoTable(columns, data, options);
+            pdf.save('PDF_GET_DATA.pdf');
+
+            sessionStorage.setItem("n", n2)
         }
 
-
-
-
     </script>
-    {% endblock content %}
+</section>
+{% endblock pdf %}

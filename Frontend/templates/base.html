@@ -1,7 +1,7 @@
-
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>IPC2_Proyecto3_202000194</title>
@@ -12,20 +12,39 @@
     <meta name="author" content="Tooplate">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+    <link href='{% static "css/theme.css" %}' rel="stylesheet" media="all">
     <link rel="stylesheet" href='{% static "/css/bootstrap.min.css" %}'>
     <link rel="stylesheet" href='{% static "/css/font-awesome.min.css" %}'>
     <link rel="stylesheet" href='{% static "/css/animate.css" %}'>
     <link rel="stylesheet" href='{% static "/css/owl.carousel.css" %}'>
     <link rel="stylesheet" href='{% static "/css/owl.theme.default.min.css" %}'>
-    <link rel="stylesheet" href='{% static "/images" %}'>
+    <!-- <link rel="stylesheet" href='{% static "/images" %}'> -->
     <!-- CSS CUSTOM -->
     <!-- <link rel=”stylesheet” href=”{% static 'css/tooplate-style.css' %}”> -->
     <!-- MAIN CSS -->
     <link rel="stylesheet" href='{% static "/css/tooplate-style.css" %}'>
     <script type="text/javascript" src="{% static '/js/papaparse.min.js' %}"></script>
+    <!-- Vendor CSS-->
+    <!-- <link href="{% static 'vendor/bootstrap-4.1/bootstrap.min.css' %}" rel="stylesheet" media="all"> -->
+    <link href="{% static '/vendor/animsition/animsition.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css' %}" rel="stylesheet"
+        media="all">
+    <link href="{% static 'vendor/wow/animate.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/slick/slick.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/select2/select2.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.css' %}" rel="stylesheet" media="all">
+
+
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.2/jspdf.plugin.autotable.js"></script> 
+
 </head>
 
-<body  id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
     <!--! PRE LOADER -->
     <section class="preloader">
         <div class="spinner">
@@ -45,82 +64,90 @@
                     <span class="date-icon"><i class="fa fa-calendar-plus-o"></i> 6:00 AM - 10:00 PM
                         (Lunes-Viernes)</span>
                     <span class="email-icon"><i class="fa fa-envelope-o"></i> <a
-                            href="mailto: 3034161730108@ingenieria.usac.edu.gt?subject= Hola Alvaro" target="_blank">3034161730108@ingenieria.usac.edu.gt</a></span>
+                            href="mailto: 3034161730108@ingenieria.usac.edu.gt?subject= Hola Alvaro"
+                            target="_blank">3034161730108@ingenieria.usac.edu.gt</a></span>
                 </div>
             </div>
         </div>
     </header>
     <!--! SELECCIÓN DE ARCHIVO -->
-<section class="navbar navbar-default navbar-static-top" role="navigation">
-    <div class="container">
-        <div class="navbar-collapse">
-            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon icon-bar"></span>
-                <span class="icon icon-bar"></span>
-                <span class="icon icon-bar"></span>
-            </button>
+    <section class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container">
+            <div class="navbar-collapse">
+                <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+                    <span class="icon icon-bar"></span>
+                </button>
 
-            <!-- lOGO TEXT HERE -->
-            <a href="http://localhost:8000" class="navbar-brand"><i class="fa fa-h-square"></i>OLA MUNDO</a>
-        </div>
+                <!-- lOGO TEXT HERE -->
+                <a href="http://localhost:8000" class="navbar-brand"><i class="fa fa-h-square"></i>OLA MUNDO</a>
+            </div>
 
-        <!-- MENU LINKS -->
-        <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav ">
-                <li>
-                    <div>
-                        <form method="POST" class="div_file" enctype="multipart/form-data">
-                            <p class="texto">SELECCIONAR ARCHIVO</p>
-                            <input id="documentoXML" type="file" name="documentoXML[]" class="btn_enviar" accept=".xml"
-                                multiple>
-                        </form>
+            <!-- MENU LINKS -->
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav ">
+                    <li>
+                        <div>
+                            <form method="POST" class="div_file" enctype="multipart/form-data">
+                                <p class="texto">SELECCIONAR ARCHIVO</p>
+                                <input id="documentoXML" type="file" name="documentoXML[]" class="btn_enviar"
+                                    accept=".xml" multiple>
+                            </form>
 
-                    </div>
-                    <!-- <li onclick="cerrarsesion()" class="btn btn-primary texto">
+                        </div>
+                        <!-- <li onclick="cerrarsesion()" class="btn btn-primary texto">
                                 <p href="#appointment" class="texto">CARGAR ARCHIVO</p> -->
-                <li>
-                    <div class="div_file">
-                        <!-- <button class="div_file "> -->
-                        <p class="texto" data-toggle="dropdown">PETICIONES</p>
-                        <!-- </button> -->
-                        <div class="dropdown-menu ">
-                            <br>
-                            <!-- !Al seleccionar esta opción se deben de consultar los datos almacenados en el archivo autorizaciones.xml y se mostrarán los datos en un recuadro de texto de salida. -->
-                            <a href="http://localhost:8000" class="dropdown-item">Consultar Datos</a>
-                            <br><br>
-                            <!--! Al seleccionar esta opción se podrá elegir la fecha por la cual se requiere filtrar y se debe de mostrar gráficamente un resumen de movimientos por NIT en esa fecha dada. Por cada NIT se debe apreciar el IVA emitido y el IVA recibido. -->
-                            <a href="http://localhost:8000/ResumenIva" class="dropdown-item">Resumen IVA fecha/NIT</a>
-                            <br><br>
-                            <!-- !Al seleccionar esta opción se podrá elegir unrango de fechas por la cual se requiere filtrar, luego podrá elegir si desea verlos valores totales o los valores sin IVA. Se deberá presentar gráficamente por cada fecha el valor autorizado (Total o sin IVA). -->
-                            <a href="http://localhost:8000/ResumenRango" class="dropdown-item">Resumen RANGO/fechas</a>
-                            <!-- <br><br>
+                    <li>
+                        <div class="div_file">
+                            <!-- <button class="div_file "> -->
+                            <p class="texto" data-toggle="dropdown">PETICIONES</p>
+                            <!-- </button> -->
+                            <div class="dropdown-menu ">
+                                <br>
+                                <!-- !Al seleccionar esta opción se deben de consultar los datos almacenados en el archivo autorizaciones.xml y se mostrarán los datos en un recuadro de texto de salida. -->
+                                <a href="http://localhost:8000" class="dropdown-item">Consultar Datos</a>
+                                <br><br>
+                                <!--! Al seleccionar esta opción se podrá elegir la fecha por la cual se requiere filtrar y se debe de mostrar gráficamente un resumen de movimientos por NIT en esa fecha dada. Por cada NIT se debe apreciar el IVA emitido y el IVA recibido. -->
+                                <a href="http://localhost:8000/ResumenIva" class="dropdown-item">Resumen IVA
+                                    fecha/NIT</a>
+                                <br><br>
+                                <!-- !Al seleccionar esta opción se podrá elegir unrango de fechas por la cual se requiere filtrar, luego podrá elegir si desea verlos valores totales o los valores sin IVA. Se deberá presentar gráficamente por cada fecha el valor autorizado (Total o sin IVA). -->
+                                <a href="http://localhost:8000/ResumenRango" class="dropdown-item">Resumen
+                                    RANGO/fechas</a>
+                                <!-- <br><br>
                             Se deberán crear gráficas para los dos resúmenes anteriores. Unejemplo se muestra en la figura 2.
                             <a onclick="" class="dropdown-item">Gráfica</a> -->
-                            <br><br>
-                            <!--! Deberá ser posible realizar un reporte de todas laspeticiones anteriormente descritas -->
-                            <a onclick="pdf()" class="dropdown-item">Reporte PDF</a>
+                                <br><br>
+                                <!--! Deberá ser posible realizar un reporte de todas laspeticiones anteriormente descritas -->
+                                <a onclick="pdf()" class="dropdown-item">Reporte PDF</a>
 
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- <li onclick="cerrarsesion()" class="appointment-btn">
+                        <!-- <li onclick="cerrarsesion()" class="appointment-btn">
                                 <a href="#appointment">AYUDA</a> -->
-                <li>
-                    <div class="div_file">
-                        <p class="texto" data-toggle="dropdown">AYUDA</p>
-                        <div class="dropdown-menu ">
-                            <br><br>
-                            <a href="" class="dropdown-item">DOCUMENTACION</a>
-                            <br><br>
-                            <a onclick="me()" class="dropdown-item">INFORMACIÓN ESTUDIANTE</a>
-                        </div>
-                </li>
-            </ul>
+                    <li>
+                        <div class="div_file">
+                            <p class="texto" data-toggle="dropdown">AYUDA</p>
+                            <div class="dropdown-menu ">
+                                <br><br>
+                                <a href="http://localhost:8000/Docu" class="dropdown-item">DOCUMENTACION</a>
+                                <br><br>
+                                <a href="" class="dropdown-item">DOCUMENTACION 2</a>
+                                <br><br>
+                                <a onclick="me()" class="dropdown-item">INFORMACIÓN ESTUDIANTE</a>
+                            </div>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
     {% block content %} {% endblock content %}
+    {% block pdf %}
+
+    {% endblock pdf %}
 
 
 
@@ -233,6 +260,14 @@
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src='{% static "/js/papaparse.min.js" %}'></script>
+    <script>
+        function returnback() {
+            location.href = "http://localhost:8000"
+        }
+        function PDF() {
+            window.print();
+        }
+    </script>
 </body>
 
 </html>
