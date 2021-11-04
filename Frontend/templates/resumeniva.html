@@ -39,7 +39,7 @@
 <script>
     let miCanvas = document.getElementById("myChart").getContext("2d")
     var imgData;
-    var myImage = new Image();
+    var ruta;
     function generateGraphic() {
         datos = []
         labels = []
@@ -86,7 +86,7 @@
                 let strh = `<br>
                 <h3>Filtro por fecha</h3><br>
                 <img src="/static/images/`+ res + `" alt="texto descriptivo">`;
-                imgData = "/static/images/" + res;
+                ruta = "/static/images/" + res;
                 block.innerHTML = strh;
                 console.log('!!All Well!!')
                 alert("!!Graph create Correctly !!")
@@ -214,8 +214,33 @@
 
             var columns = ["GRÁFICO DE RESUMEN DE IVA POR CADA NIT"];
             var data = [
-                [` ${descripcion}`],
+                [` FECHA GENERADA: ${descripcion}`],
             ];
+
+            // function getDataUrl(img) {
+            //     // Create canvas
+            //     const canvas = document.createElement('canvas');
+            //     const ctx = canvas.getContext('2d');
+            //     // Set width and height
+            //     canvas.width = img.width;
+            //     canvas.height = img.height;
+            //     // Draw the image
+            //     ctx.drawImage(img, 0, 0);
+            //     return canvas.toDataURL('image/jpeg');
+            // }
+            // // Select the image
+            // const img = document.querySelector('#my-image');
+            // img.addEventListener('load', function (event) {
+            //     const dataUrl = getDataUrl(event.currentTarget);
+            //     console.log(dataUrl);
+            // });
+            // var doc = new jsPDF();
+            // var imgData = 'data:image/jpeg;base64,' + Base64.encode(ruta);
+            // console.log(imgData);
+            // // doc.setFontSize(40);
+            // // doc.text(30, 20, 'Hello world!');
+            // pdf.output('datauri');
+            pdf.addImage(imgData, 'JPEG', 15, 40, 180, 160);
             // console.log(imgData)
             // pdf.addImage(imgData, 'JPEG', 10, 40, 180, 180);
             // imgData.onload = function(){
@@ -223,28 +248,31 @@
             // console.log("siuuuuuuuuuuuuuu")
             // // doc.save('myPDF.pdf');
             // };
-            var elementHandler = {
-                '#ignorePDF': function (element, renderer) {
-                    return true;
-                }
-            };
-            var source = window.document.getElementsByTagName("body")[0];
-            pdf.fromHTML(
-                source,
-                15,
-                15,
-                {
-                    'width': 180, 'elementHandlers': elementHandler
-                });
+            // var elementHandler = {
+            //     '#ignorePDF': function (element, renderer) {
+            //         return true;
+            //     }
+            // };
+            // var source = window.document.getElementsByTagName("html")[0];
+            // pdf.fromHTML(
+            //     source,
+            //     15,
+            //     15,
+            // );
+            // var elementToPrint = document.getElementById('metergraph');
+            // pdf.addHTML(elementToPrint, () => {
+            //     pdf.autoPrint();
+            //     // doc.save('Test.pdf');
+            // });
 
-            var header = function (data) {
-                pdf.setFontSize(18);
-                pdf.setTextColor(10);
-                pdf.setFontStyle('normal');
-                //doc.addImage(headerImgData, 'JPEG', data.settings.margin.left, 20, 50, 50);
-                pdf.text(headerTxt, data.settings.margin.left, 10);
+            // var header = function (data) {
+            //     pdf.setFontSize(18);
+            //     pdf.setTextColor(10);
+            //     pdf.setFontStyle('normal');
+            //     doc.addImage(headerImgData, 'JPEG', data.settings.margin.left, 20, 50, 50);
+            //     pdf.text(headerTxt, data.settings.margin.left, 10);
 
-            };
+            // };
             var options = {
                 beforePageContent: header,
                 margin: { top: 15 },

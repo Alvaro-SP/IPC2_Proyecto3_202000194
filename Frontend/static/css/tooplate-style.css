@@ -1260,4 +1260,82 @@ http://www.tooplate.com/view/2098-health
     }
 
   }
+  
+/*--------------------*/
+/* COUNTER */
+/*--------------------*/
+
+#counterSection {
+	background-image: url(images/counter-bg2.jpg);
+	background-repeat: no-repeat;
+	background-position: 100%;
+	background-color: #222;
+	display: block;
+	float: left;
+	padding: 77px 0;
+	width: 100%;
+	position: relative;
+	height: 300px;
+}
+#counterSection::after {
+  background-color: rgba(0, 0, 0, 0.7);
+  content: "";
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.counter-area {
+  display: inline;
+  float: left;
+  position: relative;
+  width: 100%;
+  z-index: 99;
+}
+.counter-box {
+  border: 1px solid #fff;
+  border-radius: 10px;
+  display: inline;
+  float: left;
+  font-family: "Raleway",sans-serif;
+  padding: 10px 5px 20px;
+  width: 100%;
+  position: relative;
+}
+.counter-box::after {
+  border: 1px solid #fff;
+  border-radius: 10px;
+  content: "";
+  height: 111%;
+  left: -9px;
+  position: absolute;
+  top: -8px;
+  width: 107%;
+}
+.counter-no {
+  color: #fff;
+  display: inline;
+  float: left;
+  font-size: 60px;
+  font-weight: bold;
+  line-height: 1.3em;
+  padding-left: 0;
+  text-align: center;
+  width: 100%;
+}
+.counter-label {
+  color: #ededed;
+  display: inline;
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.8em;
+  padding-left: 0;
+  padding-top: 5px;
+  text-align: center;
+  width: 100%;
+  text-transform: uppercase;
+}
+
 

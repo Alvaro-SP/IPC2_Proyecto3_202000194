@@ -14,7 +14,7 @@ class peticiones:
             newlist_temporal = json.loads(cadena_leida)#!convierte a lista
             list_dtes_news = []  # LISTA QUE SE DESERIALIZA
             for i in newlist_temporal:
-                print(datos(**json.loads(json.dumps(i))))
+                # print(datos(**json.loads(json.dumps(i))))
                 list_dtes_news.append(datos(**json.loads(json.dumps(i))))
             if list_dtes_news!=[]:
                 self.list_dtes= list_dtes_news
@@ -23,51 +23,77 @@ class peticiones:
         except:
             self.list_dtes= []
         self.error_obj=""
-        # self.total_fac_bue=0
-        # self.total_fac_mal=0
+        self.total_fac_bue=0
+        self.total_fac_mal=0
         self.fechas_list=[]
-        self.cont_dtes=1
+        try:
+            file2 = open('Serializacion/cant_dtes_ini.txt', 'r', encoding="utf8")        
+            cadena_leida2=file2.read()
+            file2.close()
 
+            if int(cadena_leida2)!=0:
+                self.cont_dtes= int(cadena_leida2)
+            else :
+                self.cont_dtes= 0
+        except:
+            self.cont_dtes= 0
+    
     def reiniciar_todo(self):
         self.list_dtes=[]
         self.error_obj=""
+        self.fechas_list=[]
+        self.total_fac_bue=0
+        self.total_fac_mal=0
+        self.cont_dtes= 0
         #!reset el XML de ENTRADA/SALIDA
-        archivo1 = open('XML_generados/archivo_Salida_.xml', 'w', encoding="utf8")        
+        archivo1 = open('XML_generados/autorizaciones.xml', 'w', encoding="utf8")        
         archivo1.write("")
         archivo1.close()
+        archivo15 = open('Serializacion/ultimoXMLleido.txt', 'w', encoding="utf8")        
+        archivo15.write("")
+        archivo15.close()
         archivo2 = open('XML_generados/archivo_Entrada_.xml', 'w', encoding="utf8")        
         archivo2.write("")
         archivo2.close()
+
         serial_list=open('Serializacion/list_dtesXML.txt', 'w', encoding="utf8")
         # cadena_lista=json.dumps(self.list_dtes)#!convierte a string
         # print("cadena: ", cadena_lista, type(cadena_lista))
         # print("lista: ", lista_convertida, type(lista_convertida))
-        serial_list.write(self.list_dtes)
+        serial_list.write("[]")
         serial_list.close()
 
+        cant_dtes=open('Serializacion/cant_dtes.txt', 'w', encoding="utf8")
+        cant_dtes.write("")
+        cant_dtes.close()
+
+        a=open('Serializacion/list_fechas.txt', 'w', encoding="utf8")
+        a.write("[]")
+        a.close()
+
+        file = open('Serializacion/cant_fac_bue.txt', 'w', encoding="utf8")        
+        file.write("0")
+        file.close()
+        file2 = open('Serializacion/cant_fac_mal.txt', 'w', encoding="utf8")        
+        file2.write("0")
+        file2.close()
+    
     def agregar_peticion(self, Datos):
         self.list_dtes.append(Datos)
         serial_list=open('Serializacion/list_dtesXML.txt', 'w', encoding="utf8")
 
         # json_string = json.dumps([ob.__dict__ for ob in self.list_dtes])
         json_data = json.dumps([us.__dict__ for us in self.list_dtes])
-        # print(json_data)
-        # print(type(json_data))
-
-        # print(json_data)
-        # cadena_lista=json.dumps(self.list_dtes)#!convierte a string
-        # print("cadena: ", cadena_lista, type(cadena_lista))
-        # print("lista: ", lista_convertida, type(lista_convertida))
+        
         serial_list.write(json_data)
         serial_list.close()
         # lista_convertida=json.loads(cadena_lista)#!convierte a lista
-
-
-
+        
+    def add_cont_dte(self):
+        self.cont_dtes+=1
         cant_dtes=open('Serializacion/cant_dtes.txt', 'w', encoding="utf8")
         cant_dtes.write(str(self.cont_dtes))
-        cant_dtes.close()
-        self.cont_dtes+=1
+        cant_dtes.close()    
 
     def verificar_peticion_referencia(self, referencia):
         for i in self.list_dtes:
@@ -75,9 +101,43 @@ class peticiones:
                 return False
         return True
             
-    # def total_fac_buenasymalas(self, buenas,malas):
-    #     self.total_fac_bue=buenas
-    #     self.total_fac_mal=malas
+    def total_fac_buenasymalas(self, buenas,malas):
+        self.total_fac_bue=buenas
+        self.total_fac_mal=malas
+        #! se actualizan los valores serializados en cada uno de los archivos.
+        cant_fac_bue=open('Serializacion/cant_fac_bue.txt', 'w', encoding="utf8")
+        cant_fac_bue.write(str(self.total_fac_bue))
+        cant_fac_bue.close()
+
+        cant_fac_mal=open('Serializacion/cant_fac_mal.txt', 'w', encoding="utf8")
+        cant_fac_mal.write(str(self.total_fac_mal))
+        cant_fac_mal.close()
+    def get_facts_bue(self):
+        cant_fac_bue=open('Serializacion/cant_fac_bue.txt', 'r', encoding="utf8")
+        # cant_fac_bue.write(str(self.total_fac_bue))
+        cadena_leida3=cant_fac_bue.read()
+        self.total_fac_bue=cadena_leida3
+        cant_fac_bue.close()
+        return self.total_fac_bue
+    def get_facts_mal(self):
+        cant_fac_bue=open('Serializacion/cant_fac_mal.txt', 'r', encoding="utf8")
+        # cant_fac_bue.write(str(self.total_fac_bue))
+        cadena_leida3=cant_fac_bue.read()
+        self.total_fac_mal=cadena_leida3
+        cant_fac_bue.close()
+        return self.total_fac_mal
+    def get_facts_tot(self):
+        try:
+            cant_dtes=open('Serializacion/cant_dtes.txt', 'r', encoding="utf8")
+            cadena_leida4=cant_dtes.read()
+            cant_dtes.close()  
+            if int(cadena_leida4)!=0:
+                self.cont_dtes = int(cadena_leida4)
+            else :
+                self.cont_dtes = 0
+        except:
+            self.cont_dtes=0
+        return self.cont_dtes
     #!CASI TODO EL PROCESO PARA LA SALIDA DEL XML GENERADO QUE SE ACTUALIZA
     def proceso_datos_salida(self):
         lista_datos = []
@@ -111,23 +171,22 @@ class peticiones:
             element['cant_corrects_fac'] = len(facturas_Valid)
             list_emisors=[]
             for dte in self.list_dtes:
-                if dte.nit_emisor not in list_emisors and dte.valido==True:
+                if dte.nit_emisor not in list_emisors and dte.valido==True and dte.date==date:
                         list_emisors.append(dte)
             element['cant_emisors'] = len(list_emisors)
 
             list_receptors=[]
-            for dte in self.list_dtes:
-                if not dte.nit_receptor in list_receptors:
-                    if dte.valido==True:
-                        list_receptors.append(dte)
+            for dte2 in self.list_dtes:
+                if dte2.nit_receptor not in list_receptors and dte2.date==date and dte2.valido==True:
+                    list_receptors.append(dte2)
             element['cant_receptors'] = len(list_receptors)
 
             
             element['autorizaciones'] = []
             for user in facturas_Valid:
                 if user.valido==True:
-                    print(user.valido)
-                    print(user.date)
+                    # print(user.valido)
+                    # print(user.date)
                     element['autorizaciones'].append({
                         'nit_emisor': user.nit_emisor,
                         'codigo_aprobacion': user.Codigo_completo,
@@ -201,23 +260,23 @@ class peticiones:
                     list_nits.append(nit_recibe)
                     iva_recibido[nit_recibe]=0
                     iva_emitido[nit_recibe]=0
-            print(iva_emitido.keys())
-            print(iva_emitido.values())
-            print(iva_recibido.keys())
-            print(iva_recibido.values())
-            print("Lista: ", list_nits)
+            # print(iva_emitido.keys())
+            # print(iva_emitido.values())
+            # print(iva_recibido.keys())
+            # print(iva_recibido.values())
+            # print("Lista: ", list_nits)
             #! luego se recorren todos los nits
             for cnit in list_nits:
-                print("Recorriendo Nit: ", cnit)
+                # print("Recorriendo Nit: ", cnit)
                 #! por cada nit 
                 for nemi in fechas_list:
                     #!si el nit emisor == al nit se guarda un dic con iva
-                    print(" ", nemi.nit_emisor,"==", cnit)
+                    # print(" ", nemi.nit_emisor,"==", cnit)
                     if nemi.nit_emisor == cnit:
                         temp=iva_emitido[cnit]
                         iva_emitido[cnit]=round(float(nemi.iva)+temp,2)
                     #!si el nit receptor == al nit se guarda un dic con iva
-                    print(" ", nemi.nit_receptor,"==", cnit)
+                    # print(" ", nemi.nit_receptor,"==", cnit)
                     if nemi.nit_receptor == cnit:
                         temp2=iva_recibido[cnit]
                         iva_recibido[cnit]=round(float(nemi.iva)+temp2,2)
@@ -268,9 +327,9 @@ class peticiones:
             for ivasemitid in iva_recibido.values():
                 list_iva_recibido.append(ivasemitid)
 
-            print(list_nits," Longitud: ", len(list_nits))
-            print(list_iva_emitido," Longitud: ",len(list_iva_emitido))
-            print(list_iva_recibido," Longitud: ",len(list_iva_recibido))
+            # print(list_nits," Longitud: ", len(list_nits))
+            # print(list_iva_emitido," Longitud: ",len(list_iva_emitido))
+            # print(list_iva_recibido," Longitud: ",len(list_iva_recibido))
             if len(list_nits)==len(list_iva_emitido)==len(list_iva_recibido):
                 ruta_graph=self.get_Graphic_nit_Ivas(list_nits,list_iva_emitido,list_iva_recibido,str(date))
             print("RUTA DE LA GRÁFICA: ",ruta_graph)
@@ -366,6 +425,7 @@ class peticiones:
             if w.date == date and w.valido==True:
                 total+=float(w.total)
         return total
+    
     def get_valor_sinIva(self,date):
         total=0
         for w in self.list_dtes:
@@ -383,7 +443,6 @@ class peticiones:
         # print(lista_fechas)
         return lista_fechas
 
-    
     def gen_graph_range(self, lista_fechas, list_values, dateini, datefin, param):
         date=dateini+"_to_"+datefin
         # Nits = ['NIT 1', 'NIT 2', 'NINT 3', 'NIT 4', 'NIT 5']
@@ -424,7 +483,6 @@ class peticiones:
         ruth=f'graph_ResumenRango{param}_{date}.jpg'
         plt.savefig(rutagraph)
         return ruth
-
 
     def get_Resumen_Rango(self, dateini, datefin, param):
         if dateini!= None and datefin!= None and param != None:

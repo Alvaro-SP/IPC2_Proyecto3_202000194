@@ -14,13 +14,21 @@ def index(request):
         peticionDatos= requests.get('http://localhost:5000/ConsultaDatos')
         peticionEntrada =requests.get('http://localhost:5000/ConsultaXMLentrada')
         peticionDatos2 =requests.get('http://localhost:5000/ConsultaSalida')
-        # mensajeerror =requests.get('http://localhost:5000/ConsultamensajeError')
+        facbue =requests.get('http://localhost:5000/Consulta_fac_bue')
+        facmal =requests.get('http://localhost:5000/Consulta_fac_mal')
+        mensajeerror =requests.get('http://localhost:5000/ConsultamensajeError')
+        factot =requests.get('http://localhost:5000/Consulta_fac_tot')
+        facini =requests.get('http://localhost:5000/Consulta_fac_ini')
         
         context = {
             'Salida': peticionDatos.text,
             'Entrada': peticionEntrada.text,
             'Salida2': peticionDatos2.text,
-            # 'mensaje': mensajeerror.text,
+            'facbue': json.loads(facbue.text),
+            'facmal': json.loads(facmal.text),
+            'mensaje': json.loads(mensajeerror.text),
+            'factot': json.loads(factot.text),
+            'facini': json.loads(facini.text),
         }
         # print(peticionDatos.text)
         print("▬▬▬▬▬▬▬▬▬▬▬▬▬▬BIENVENIDO GET▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬")

@@ -42,20 +42,24 @@
             <tr>
                 <div id="outputentendible">
                     <textarea name="output2" id="textareaSALIDA2" wrap="on" cols="120" rows="35"
-                    enabled>{{ Salida2 }} </textarea>
+                        enabled>{{ Salida2 }} </textarea>
 
                 </div>
             </tr>
         </table>
         <br>
-        
-        
+
+
         <table>
             <tr align="center">
                 <h2>ERRORES</h2>
             </tr>
             <tr>
-                <div id="error"></div>
+                <div >
+                    <textarea id="error" wrap="on" id="textareaError" name="textareaError" cols="100" rows="15"
+                    enabled></textarea>
+
+                </div>
             </tr>
         </table>
         <br>
@@ -63,7 +67,50 @@
     </div>
 
 </section>
-
+<!--=========== BEGAIN Counter SECTION ================-->
+<section id="counterSection">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="counter-area">
+                    <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="counter-box">
+                            <div class="counter-no counter">
+                                {{ factot }}
+                            </div>
+                            <div class="counter-label">Facturas Analizadas</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="counter-box">
+                            <div class="counter-no counter">
+                                {{ facbue }}
+                            </div>
+                            <div class="counter-label">Facturas Correctas</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="counter-box">
+                            <div class="counter-no counter">
+                                {{ facmal }}
+                            </div>
+                            <div class="counter-label">Facturas Incorrectas</div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6">
+                        <div class="counter-box">
+                            <div class="counter-no counter">
+                                {{ facini }}
+                            </div>
+                            <div class="counter-label">Total de Facturas desde el inicio</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--=========== End Counter SECTION ================-->
 <script>
     const documentInput = document.getElementById('documentoXML');
 
@@ -118,8 +165,9 @@
             .then(res => {
                 console.log(res)
                 const block = document.getElementById('error');
-                let strh = `<textarea name="output" id="output" wrap="on" id="textareaError" name="textareaError" cols="100" rows="15"
-                    enabled>`+ res + `</textarea>`;
+                // let strh = `<textarea name="output" id="output" wrap="on" id="textareaError" name="textareaError" cols="100" rows="15"
+                //     enabled>`+ res + `</textarea>`;
+                let strh = res ;
                 block.innerHTML = strh;
                 console.log('!!All Well!!')
                 alert(res)
@@ -261,7 +309,7 @@
             pdf.setTextColor(0, 0, 0);
             pdf.text(130, 54, '       S875');
             pdf.text(160, 54, ` `);
-            
+
 
 
 
@@ -293,5 +341,5 @@
         }
 
     </script>
-    </section>
+</section>
 {% endblock pdf %}
